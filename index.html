@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💕</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: #ffd6e8;
+  overflow: hidden;
+  text-align: center;
+}
+
+.page {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+}
+
+.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #d63384;
+  font-size: 2.2em;
+  border: 3px solid #ff4d88;      /* Pink border around text */
+  border-radius: 15px;            /* Rounded corners */
+  padding: 15px 30px;             /* Space inside the border */
+  background-color: #fff0f5;      /* Light pink inside the border */
+  display: inline-block;          /* Border wraps the text tightly */
+  transition: all 0.3s ease;
+}
+
+.buttons {
+  margin-top: 20px;
+  position: relative;
+}
+
+button {
+  font-size: 1.5em;
+  padding: 20px 50px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
+
+#yesBtn {
+  background: #ff4d88;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+#yesBtn:hover::after {
+  content: "✨";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2em;
+  animation: sparkle 0.8s ease;
+}
+
+@keyframes sparkle {
+  0% {opacity: 0; transform: translateX(-50%) scale(0);}
+  50% {opacity: 1; transform: translateX(-50%) scale(1.5);}
+  100% {opacity: 0; transform: translateX(-50%) scale(0);}
+}
+
+#noBtn {
+  background: white;
+  color: #ff4d88;
+  position: absolute;
+}
+
+img {
+  width: 250px;
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.heart {
+  position: fixed;
+  bottom: -10px;
+  color: #ff5c8a;
+  font-size: 20px;
+  animation: float 6s linear infinite, fade 6s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100vh); }
+}
+
+@keyframes fade {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.firework {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 1;
+  pointer-events: none;
+  animation: explode 2.5s forwards;
+}
+
+@keyframes explode {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="page1" class="page active">
+  <h1>Fatima, will you be my Valentine? 💕</h1>
+  <div class="buttons">
+    <button id="yesBtn" onclick="goYes()">YES 💖</button>
+    <button id="noBtn" onclick="moveNo()">NO</button>
+  </div>
+</div>
+
+<div id="page2" class="page">
+  <h1>💕 Yayy! I knew you'd say yess!</h1>
+  <img src="your-image.jpg">
+  <h1>You have made me the happiest 💖</h1>
+</div>
+
+<script>
+const texts = [
+  "Wait are you sure?",
+  "Really?",
+  "Try again!",
+  "You sure?",
+  "Haha nice try",
+  "No escape",
+  "Keep trying",
+  "You can't escape love",
+  "Still no? Really??",
+  "Nope not happening"
+];
+let index = 0;
+
+// NO button moves and changes text
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  btn.style.left = Math.random() * 60 + "%";
+  btn.style.top = Math.random() * 60 + "%";
+  btn.innerText = texts[index];
+  index = (index + 1) % texts.length;
+}
+
+// Fireworks for YES button
+function fireWorkAnimation(callback) {
+  const colors = ['#ff4d88', '#ff85c1', '#ffe6f0', '#ff1a66'];
+  const count = 30; // number of particles
+  for (let i = 0; i < count; i++) {
+    const fire = document.createElement('div');
+    fire.className = 'firework';
+    fire.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 150 + 50;
+    fire.style.setProperty('--x', `${Math.cos(angle)*distance}px`);
+    fire.style.setProperty('--y', `${Math.sin(angle)*distance}px`);
+    fire.style.left = '50%';
+    fire.style.top = '50%';
+    document.body.appendChild(fire);
+    setTimeout(() => fire.remove(), 2500);
+  }
+  setTimeout(callback, 2500);
+}
+
+// YES button click
+function goYes() {
+  fireWorkAnimation(() => {
+    document.getElementById("page1").classList.remove("active");
+    document.getElementById("page2").classList.add("active");
+  });
+}
+
+// Floating hearts
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 300);
+
+</script>
+
+</body>
+</html>
